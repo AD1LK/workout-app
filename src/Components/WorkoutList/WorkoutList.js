@@ -1,7 +1,15 @@
 import React from 'react';
 
 
-export default function WorkoutList() {
+export default function WorkoutList(props) {
+    const workoutItems = props.workoutItems;
+    const tableRows = workoutItems.map(item => (
+        <tr key={item.id}>
+            <td>{item.exercise}</td>
+            <td>{item.quantity}</td>
+            <td><button>Delete</button></td> 
+        </tr>
+    ));
     return (
         <table>
             <thead>
@@ -12,22 +20,8 @@ export default function WorkoutList() {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Rowing machine</td>
-                    <td>20 minutes</td>
-                    <td>
-                        <button>Delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Stretching</td>
-                    <td>10 minutes</td>
-                    <td>
-                        <button>Delete</button>
-                    </td>
-                </tr>
+                {tableRows}
             </tbody>
         </table>
-
-);
+    );
 }
