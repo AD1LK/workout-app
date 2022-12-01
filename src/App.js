@@ -4,26 +4,39 @@ import React from 'react';
 import WorkoutList from './Components/WorkoutList/WorkoutList';
 import WorkoutForm from './Components/WorkoutForm/WorkoutForm';
 
-
 export default function App() {
 
-  const [workoutItems, setWorkoutItems] = React.useState([
+  const [workoutItems, setWorkoutItems] = React.useState({
+    workoutList: [
     {
       exercise: 'Push-ups',
       quantity: '4 x 25',
-      id: 1
+      id: -2
     },
     {
       exercise: 'Bench press',
       quantity: '40kg 4 x 12',
-      id: 2
+      id: -1
     },
     {
       exercise: 'Leg press',
       quantity: '80kg 4 x 25',
-      id: 3
+      id: 0
     }
-  ]);
+  ],
+  nextId: 1
+});
+
+const addItem = (newItem) => {
+  setWorkoutItems(oldState => {
+    const newState = {}; 
+    newState.nextId = oldState.nextId + 1;
+    newState.workoutList = [...oldState.workoutList];
+    newItem.id = oldState.nextId;
+    newState.workoutList.push(newItem);
+    return newState;
+  });
+}
 
   return (
     <div className="App">
@@ -31,8 +44,8 @@ export default function App() {
         <h1>Workout app</h1>
       </header>
       <main>
-        <WorkoutForm />
-        <WorkoutList workoutItems={workoutItems}/>
+        <WorkoutForm addItem={addItem} />
+        <WorkoutList workoutItems={workoutItems.workoutList} />
       </main> 
     </div>
   );
