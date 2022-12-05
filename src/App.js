@@ -11,16 +11,19 @@ export default function App() {
     {
       exercise: 'Push-ups',
       quantity: '4 x 25',
+      isCompleted: false,
       id: -2
     },
     {
       exercise: 'Bench press',
       quantity: '40kg 4 x 12',
+      isCompleted: false,
       id: -1
     },
     {
       exercise: 'Leg press',
       quantity: '80kg 4 x 25',
+      isCompleted: false,
       id: 0
     }
   ],
@@ -33,8 +36,37 @@ const addItem = (newItem) => {
     newState.nextId = oldState.nextId + 1;
     newState.workoutList = [...oldState.workoutList];
     newItem.id = oldState.nextId;
+    newItem.isCompleted = false,
     newState.workoutList.push(newItem);
     return newState;
+  });
+}
+
+const deleteItem = (itemId) => {
+  setWorkoutItems(oldWorkoutItems => {
+    const { workoutList, nextId } = oldWorkoutItems;
+    const newWorkoutList = workoutList.filter(item => item.id !== itemId);
+    return {
+      workoutList: newWorkoutList, 
+      nextId
+    }
+  });
+}
+
+const toggleItem = (itemId) => {
+  setWorkoutItems(oldWorkoutItems => {
+    const { workoutList, nextId } = oldWorkoutItems;
+    const newWorkoutList = workoutList.map(item => {
+      item = {...item}; 
+      if (item.id === itemId) {
+        item.isCompleted = !item.isCompleted;
+      }
+      return item;
+    });
+    return {
+      workoutList: newWorkoutList, 
+      nextId
+    }      
   });
 }
 
@@ -45,7 +77,10 @@ const addItem = (newItem) => {
       </header>
       <main>
         <WorkoutForm addItem={addItem} />
-        <WorkoutList workoutItems={workoutItems.workoutList} />
+        <WorkoutList 
+        workoutItems={workoutItems.workoutList}
+        deleteItem={deleteItem} 
+        toggleItem={toggleItem} />
       </main> 
     </div>
   );
