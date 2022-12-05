@@ -97,6 +97,17 @@ const moveItem = (itemId, isUpwards) => {
   });    
 }
 
+const deleteAllCompletedItems = () => {
+  setWorkoutItems(oldWorkoutItems => {
+    const { workoutList, nextId } = oldWorkoutItems;
+    const newWorkoutList = workoutList.filter(item => !item.isCompleted);
+    return {
+      workoutList: newWorkoutList, 
+      nextId
+    }
+  });
+}
+
   return (
     <div className="App">
       <header className="App-header">
@@ -108,7 +119,10 @@ const moveItem = (itemId, isUpwards) => {
         workoutItems={workoutItems.workoutList}
         deleteItem={deleteItem} 
         toggleItem={toggleItem}
-          moveItem={moveItem} />
+        moveItem={moveItem} />
+        <button onClick={deleteAllCompletedItems}>
+          Delete Completed Todos
+        </button>
       </main> 
     </div>
   );
